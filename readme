@@ -1,0 +1,33 @@
+Debugging
+--------------------
+/var/www/js-html/weather/server$ node run.js & //Start background process
+killall -s KILL node
+
+
+
+MONGO Create Admin user
+-----------------
+1. Stop Mongo
+$sudo systemctl stop mongodb
+
+2. In mongod.conf, uncomment #security: authorization: enabled
+$nano /etc/mongod.conf 
+
+3. Restart Mongo
+sudo systemctl start mongodb
+
+4. Create Admin User with all rights
+use admin
+db.createUser({ user: "mongoadmin" , pwd: "denied1234", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
+
+5. Stop Mongo
+$sudo systemctl stop mongodb
+
+6. In mongod.conf, revert to security: authorization: enabled
+$nano /etc/mongod.conf 
+
+7. Restart Mongo
+sudo systemctl start mongodb
+
+8. Login
+mongo admin -u irfan -p denied1234
