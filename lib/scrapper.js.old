@@ -1,19 +1,19 @@
 const feedparser = require('feedparser-promised');
 var axios = require('axios');
 const textUtil = require('./textUtil.js');
-const dbUtil = require('./dbUtil.js');
+const dbUtil = require('./db.js');
 const chromeUserAgentsList = require('../data/user-agents/chrome.js');
 const ieUserAgentsList = require('../data/user-agents/ie.js');
 const userAgents = ieUserAgentsList.concat(chromeUserAgentsList);
 const gifyApiKey_public = 'dc6zaTOxFJmzC';
 const gifyApiKey = '45jlwc7iV1JGH6XzIDMln1Bl463i8h8W';
-var MongoClient  = require('mongodb').MongoClient;
+
 
 /**
  * Utility Class to do all our RSS, and Gifi Fetch
  */
 
-let getUtils = (FeedLinkObject, processFeedsRecursive_CB) => {
+let scrapper_mod = () => {
 
 
     var processFeedsRecursive_CallBack = processFeedsRecursive_CB;
@@ -180,16 +180,16 @@ let getUtils = (FeedLinkObject, processFeedsRecursive_CB) => {
         return await axios(config);
     }
 
-    async function aSyncGetFeedItems() {
-        FetchedFeedItemsList = await feedparser.parse(FeedItemsParent.url);
+    function get_url_feed_items(url) {
+        return feedparser.parse(url);
     }
     
     return {
         processSingleFeedItemRecursive,
-        aSyncGetFeedItems
+        get_url_feed_items
     }
 
 };
 
 /** Singleton pattern */
-module.exports = getUtils;
+module.exports = scrapper_mod;

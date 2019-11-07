@@ -1,0 +1,28 @@
+version: '3'
+services:
+  redis:
+    container_name: myapp-redis
+    image: 'redis:4.0.11'
+    expose:
+      - 6379
+  myapp:
+    container_name: myapp
+    #Restart should be disabled for this
+    #restart: always
+    #build explains which image should be used by the app service definition (in this case, 
+    #it points to what would be created by running the Dockerfile)
+    build: .
+    #links lets the app reference the mongo and redis services
+    links:
+      - redis
+      - mongo
+    environment:
+    - REDIS_URL=redis://myapp-redis
+    # rest of the environment definitions
+  mongo:
+    container_name: myapp-mongo
+    image: 'mongo:4'
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
